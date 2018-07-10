@@ -145,6 +145,27 @@ class ResourceTest extends TestCase
         );
     }
 
+    public function testLinkNewPost()
+    {
+        $request = $this->resource->post->uri('app://self/organization/member')->withQuery(['name' => 'nobody'])->linkNew('desk')->request();
+        /* @var $request Request */
+        $this->assertSame('desk', $request->links[0]->key);
+        $this->assertSame(LinkType::NEW_LINK, $request->links[0]->type);
+        $ro = $request();
+        $this->assertSame(200, $ro->code);
+        $this->assertSame(
+            [
+                'id' => 0,
+                'name' => 'nobody',
+                'desk' => [
+                    'id' => 0,
+                    'name' => "nobody's desk"
+                ]
+            ],
+            $ro->body
+        );
+    }
+
     public function testLinkCrawl()
     {
         $request = $this->resource->get->uri('app://self/blog')->withQuery(['id' => 11])->linkCrawl('tree')->request();
