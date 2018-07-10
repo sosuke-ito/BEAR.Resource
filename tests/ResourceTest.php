@@ -223,6 +223,31 @@ class ResourceTest extends TestCase
         $this->assertSame($expected, $ro->body);
     }
 
+    public function testLinkCrawlPost()
+    {
+        $query = ['name' => 'BEAR Company', 'representative_name' => 'koriym'];
+        $request = $this->resource->post->uri('app://self/organization/company')->withQuery($query)->linkCrawl('company')->request();
+        /* @var $request Request */
+        $this->assertSame('company', $request->links[0]->key);
+        $this->assertSame(LinkType::CRAWL_LINK, $request->links[0]->type);
+        $ro = $request();
+        $this->assertSame(200, $ro->code);
+        $expected = [
+            'id'                  => 0,
+            'name'                => 'BEAR Company',
+            'representative_name' => 'koriym',
+            'representative'      => [
+                'id'   => 0,
+                'name' => 'koriym',
+                'desk' => [
+                    'id'   => 0,
+                    'name' => "koriym's desk",
+                ]
+            ]
+        ];
+        $this->assertSame($expected, $ro->body);
+    }
+
     public function testHal()
     {
         $resource = (new Injector(new HalModule(new ResourceModule('FakeVendor\Sandbox')), $_ENV['TMP_DIR']))->getInstance(
