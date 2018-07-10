@@ -233,14 +233,14 @@ class ResourceTest extends TestCase
         $ro = $request();
         $this->assertSame(200, $ro->code);
         $expected = [
-            'id'                  => 0,
-            'name'                => 'BEAR Company',
+            'id' => 0,
+            'name' => 'BEAR Company',
             'representative_name' => 'koriym',
-            'representative'      => [
-                'id'   => 0,
+            'representative' => [
+                'id' => 0,
                 'name' => 'koriym',
                 'desk' => [
-                    'id'   => 0,
+                    'id' => 0,
                     'name' => "koriym's desk",
                 ]
             ]
