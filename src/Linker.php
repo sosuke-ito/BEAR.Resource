@@ -142,7 +142,7 @@ final class Linker implements LinkerInterface
             $uri = uri_template($annotation->href, $current->body);
             $rel = $this->factory->newInstance($uri);
             /* @noinspection UnnecessaryParenthesesInspection */
-            $request = new Request($this->invoker, $rel, Request::GET, (new Uri($uri))->query);
+            $request = new Request($this->invoker, $rel, $annotation->method, (new Uri($uri))->query);
             $linkedResource = $this->invoker->invoke($request);
 
             return $linkedResource;
